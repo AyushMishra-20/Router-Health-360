@@ -174,7 +174,6 @@ export default function App() {
             </svg>
             <span>ROUTER HEALTH 360</span>
           </div>
-          <span className="network-subtitle">DIGIPLUS CAMPUS FLEET DIAGNOSTICS</span>
         </div>
         
         <div className="header-actions">
