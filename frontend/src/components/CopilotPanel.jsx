@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { askCopilot } from '../api/client'
 import { formatFix } from '../utils/format'
 
@@ -20,7 +20,7 @@ export default function CopilotPanel({ routerId }) {
       const result = await askCopilot(routerId, question.trim())
       setResponse(result)
     } catch {
-      setError('Could not reach the copilot. Try again.')
+      setError('Could not reach the AI copilot service. Ensure backend is running.')
     } finally {
       setLoading(false)
     }
@@ -28,57 +28,66 @@ export default function CopilotPanel({ routerId }) {
 
   if (!routerId) {
     return (
-      <section className="panel copilot-panel">
-        <h3>AI Copilot</h3>
-        <p className="muted">Select a router to ask the copilot why it is performing badly.</p>
+      <section className="panel-card copilot-panel">
+        <div className="panel-card-header">
+          <h2>AI Copilot Interrogation</h2>
+        </div>
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+          Select a router to initiate AI diagnostics.
+        </p>
       </section>
     )
   }
 
   return (
-    <section className="panel copilot-panel">
-      <div className="panel-header">
-        <h3>AI Copilot</h3>
-        <span className="panel-subtitle">Cause · Evidence · Recommended fix</span>
+    <section className="panel-card copilot-panel">
+      <div className="panel-card-header" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '0.2rem' }}>
+        <h2>AI Copilot Interrogation</h2>
+        <span className="panel-card-subtitle">Real-time root cause analysis & evidence grounding</span>
       </div>
 
-      <form className="copilot-form" onSubmit={handleAsk}>
+      <form className="copilot-chat-form" onSubmit={handleAsk}>
         <input
           type="text"
+          className="copilot-chat-input"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask about this router…"
+          placeholder="Ask a diagnostic question about this router..."
           disabled={loading}
         />
-        <button type="submit" disabled={loading || !question.trim()}>
-          {loading ? 'Analyzing…' : 'Ask Copilot'}
+        <button type="submit" className="copilot-submit-btn" disabled={loading || !question.trim()}>
+          {loading ? 'ANALYZING...' : 'INTERROGATE'}
         </button>
       </form>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="error-text" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', marginTop: '0.5rem' }}>SYSTEM_ERR: {error}</p>}
 
       {response && (
-        <div className="copilot-response">
-          <div className="response-block">
-            <label>Diagnosis</label>
-            <p>{response.cause}</p>
+        <div className="copilot-log" style={{ marginTop: '0.5rem' }}>
+          <div className="copilot-log-card">
+            <div className="copilot-log-card-header">CORE_DIAGNOSIS</div>
+            <p className="copilot-log-text">{response.cause}</p>
           </div>
 
-          <div className="response-block">
-            <label>Evidence</label>
-            <ul>
+          <div className="copilot-log-card">
+            <div className="copilot-log-card-header">GROUNDED_EVIDENCE</div>
+            <ul className="copilot-evidence-list">
               {response.evidence.map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
             </ul>
           </div>
 
-          <div className="response-block">
-            <label>Recommended Fix</label>
+          <div className="copilot-log-card">
+            <div className="copilot-log-card-header">RECOMMENDED_FIX_ACTION</div>
             {response.recommended_fix ? (
-              <span className="fix-badge">{formatFix(response.recommended_fix)}</span>
+              <span className="copilot-fix-box">
+                {formatFix(response.recommended_fix).toUpperCase()}
+              </span>
             ) : (
-              <p className="muted">No action needed — router is healthy.</p>
+              <p className="copilot-log-text" style={{ color: 'var(--status-good)' }}>
+                NO HARDWARE REMEDIATION REQUIRED — UNIT HEALED
+              </p>
             )}
           </div>
         </div>
