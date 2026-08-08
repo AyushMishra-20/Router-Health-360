@@ -1,0 +1,19 @@
+# Render Blueprint specification for Campus Router Health 360 Backend
+services:
+  - type: web
+    name: router-health-360-backend
+    env: python
+    region: oregon
+    plan: free
+    # Note: If Render "Root Directory" is set to "backend" in the dashboard:
+    #   buildCommand: pip install -r requirements.txt
+    #   startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    # If Render "Root Directory" is left as repo root (default):
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false # Set in Render Dashboard -> Environment Variables
+      - key: PYTHON_VERSION
+        value: 3.11.0

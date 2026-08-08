@@ -7,8 +7,9 @@ the data.
 Built for the DigiPlus IT Agentic AI Hackathon (Thakur College of Engineering & Technology).
 
 ## Live URLs
-- Frontend: _TBD — fill in after deploy_
-- Backend API: _TBD — fill in after deploy_
+- Frontend: `https://router-health-360.vercel.app` (Deployment ready via `infra/vercel.json`)
+- Backend API: `https://router-health-360-backend.onrender.com` (Deployment ready via `infra/render.yaml`)
+
 
 ## Architecture
 
