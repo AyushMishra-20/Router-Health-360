@@ -20,6 +20,10 @@ def health_check():
     return {"status": "ok"}
 
 
-# TODO(backend): from app.api.rankings import router as rankings_router; app.include_router(rankings_router)
-# TODO(backend): from app.api.router_detail import router as detail_router; app.include_router(detail_router)
+from app.api.rankings import router as rankings_router
+from app.api.router_detail import router as detail_router
+
+app.include_router(rankings_router)
+app.include_router(detail_router)
+
 # TODO(ai-deploy): from app.api.copilot import router as copilot_router; app.include_router(copilot_router)
